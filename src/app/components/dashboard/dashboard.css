@@ -117,40 +117,6 @@
   background: rgba(248, 250, 252, 0.16);
 }
 
-.sidebar-footer {
-  padding: 0 1rem;
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.85rem 0.9rem;
-  border-radius: 1rem;
-  background: rgba(248, 250, 252, 0.12);
-  border: 1px solid rgba(248, 250, 252, 0.12);
-}
-
-.panel-image {
-  width: 56px;
-  height: 56px;
-  border-radius: 0.9rem;
-  object-fit: cover;
-  border: 2px solid rgba(248, 250, 252, 0.32);
-  background: rgba(248, 250, 252, 0.18);
-}
-
-.navbar-image-pair {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.35rem 0.5rem;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 8px 14px rgba(15, 23, 42, 0.08);
-}
 
 /* Main Content */
 .main-content {
@@ -724,10 +690,6 @@
 
   .content {
     padding: 1rem;
-  }
-
-  .sidebar-footer {
-    padding: 0 1rem 1rem;
   }
 
   .overview-grid,
