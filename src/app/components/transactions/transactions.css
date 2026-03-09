@@ -117,107 +117,6 @@
   background: rgba(248, 250, 252, 0.16);
 }
 
-.sidebar-footer {
-  padding: 0 1rem;
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.85rem 0.9rem;
-  border-radius: 1rem;
-  background: rgba(248, 250, 252, 0.12);
-  border: 1px solid rgba(248, 250, 252, 0.12);
-}
-
-.panel-image {
-  width: 56px;
-  height: 56px;
-  border-radius: 0.9rem;
-  object-fit: cover;
-  border: 2px solid rgba(248, 250, 252, 0.32);
-  background: rgba(248, 250, 252, 0.18);
-}
-
-.user-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid rgba(248, 250, 252, 0.35);
-  flex-shrink: 0;
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-}
-
-.user-name {
-  font-weight: 600;
-  color: #ffffff;
-  font-size: 0.95rem;
-}
-
-.user-email {
-  font-size: 0.78rem;
-  color: rgba(248, 250, 252, 0.7);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-action {
-  border: none;
-  background: rgba(248, 250, 252, 0.18);
-  color: #ffffff;
-  padding: 0.35rem 0.7rem;
-  border-radius: 0.6rem;
-  font-weight: 600;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.user-action:hover {
-  background: rgba(248, 250, 252, 0.28);
-}
-
-.logout-btn {
-  margin-top: 0.85rem;
-  width: 100%;
-  border: 1px solid rgba(248, 250, 252, 0.2);
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.16), rgba(248, 250, 252, 0.08));
-  color: #ffffff;
-  padding: 0.7rem 1rem;
-  border-radius: 0.85rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
-  line-height: 1;
-  min-height: 42px;
-}
-
-.logout-btn:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.24), rgba(248, 250, 252, 0.12));
-  border-color: rgba(248, 250, 252, 0.35);
-  box-shadow: 0 12px 20px rgba(15, 23, 42, 0.25);
-}
-
-.logout-btn:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(248, 250, 252, 0.35);
-}
-
 
 /* Main */
 .main-content {
@@ -619,9 +518,6 @@
     padding: 1rem;
   }
 
-  .sidebar-footer {
-    padding: 0 1rem 1rem;
-  }
 }
 
 @media (max-width: 480px) {
