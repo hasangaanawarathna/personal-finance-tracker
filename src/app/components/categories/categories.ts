@@ -1,7 +1,7 @@
 import { Component, inject, signal, computed, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService, Category } from '../../services/category';
 import { Auth } from '../../services/auth';
 
@@ -17,6 +17,7 @@ export class Categories implements OnInit, OnDestroy {
   private categoryService = inject(CategoryService);
   private authService = inject(Auth);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
 
   categories = this.categoryService.categories;
@@ -56,6 +57,17 @@ export class Categories implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.route.queryParamMap.subscribe((params) => {
+      if (params.get('action') === 'create' && !this.showModal()) {
+        this.openCreateModal();
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { action: null },
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
