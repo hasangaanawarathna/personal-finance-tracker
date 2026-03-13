@@ -1,6 +1,7 @@
 import { Component, inject, signal, computed, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Transaction } from '../../services/transaction';
 import { BudgetService } from '../../services/budget';
 import { CategoryService } from '../../services/category';
@@ -21,7 +22,7 @@ export interface TransactionModel {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, ReactiveFormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,11 +33,15 @@ export class Dashboard implements OnInit, OnDestroy {
   private categoryService = inject(CategoryService);
   private authService = inject(Auth);
   private router = inject(Router);
+  private fb = inject(FormBuilder);
 
   transactions = signal<TransactionModel[]>([]);
   budgets = this.budgetService.budgets;
   categories = this.categoryService.categories;
   loading = signal(false);
+  categorySaving = signal(false);
+  addCategoryError = signal<string | null>(null);
+  showAddCategoryForm = signal(false);
   currentTime = signal('');
   currentDate = signal('');
 
@@ -50,6 +55,13 @@ export class Dashboard implements OnInit, OnDestroy {
     weekday: 'short',
     month: 'short',
     day: '2-digit',
+  });
+
+  addCategoryForm = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    type: ['expense' as 'income' | 'expense', Validators.required],
+    icon: ['🏷️'],
+    color: ['#3b82f6'],
   });
 
   recentTransactions = computed(() => 
@@ -143,5 +155,55 @@ export class Dashboard implements OnInit, OnDestroy {
   getCategoryName(categoryId: string): string {
     const category = this.categories().find(c => c.id === categoryId);
     return category?.name || 'Transfer';
+  }
+
+  openAddCategoryForm(): void {
+    this.addCategoryError.set(null);
+    this.addCategoryForm.reset({
+      name: '',
+      type: 'expense',
+      icon: '🏷️',
+      color: '#3b82f6',
+    });
+    this.showAddCategoryForm.set(true);
+  }
+
+  closeAddCategoryForm(): void {
+    this.showAddCategoryForm.set(false);
+    this.addCategoryError.set(null);
+  }
+
+  saveCategory(): void {
+    if (this.addCategoryForm.invalid) {
+      this.addCategoryForm.markAllAsTouched();
+      return;
+    }
+
+    const formValue = this.addCategoryForm.getRawValue();
+    this.categorySaving.set(true);
+    this.addCategoryError.set(null);
+
+    this.categoryService
+      .createCategory({
+        name: formValue.name ?? '',
+        type: formValue.type ?? 'expense',
+        icon: formValue.icon ?? '🏷️',
+        color: formValue.color ?? '#3b82f6',
+      })
+      .pipe(finalize(() => this.categorySaving.set(false)))
+      .subscribe({
+        next: () => {
+          this.showAddCategoryForm.set(false);
+          this.addCategoryForm.reset({
+            name: '',
+            type: 'expense',
+            icon: '🏷️',
+            color: '#3b82f6',
+          });
+        },
+        error: () => {
+          this.addCategoryError.set('Unable to create category. Please try again.');
+        },
+      });
   }
 }
