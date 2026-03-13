@@ -35,7 +35,12 @@
       <div class="navbar-content">
         <h1 class="page-title">Dashboard</h1>
         <div class="navbar-right">
-          <a routerLink="/categories" class="btn-create" aria-label="Add Category">
+          <a
+            routerLink="/categories"
+            [queryParams]="{ action: 'create' }"
+            class="btn-create"
+            aria-label="Add Category"
+          >
             <span class="btn-create-icon" aria-hidden="true">+</span>
             <span class="btn-create-text">
               <span class="btn-create-title">Add Category</span>
