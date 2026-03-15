@@ -617,6 +617,20 @@
   font-size: 1rem;
 }
 
+.toast {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+.toast-success {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  color: #065f46;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -649,6 +663,12 @@
   margin: 0;
   font-size: 1.25rem;
   color: var(--ink-900);
+}
+
+.category-modal-subtitle {
+  margin-top: 0.3rem;
+  color: var(--ink-500);
+  font-size: 0.9rem;
 }
 
 .category-modal-close {
@@ -708,6 +728,48 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.icon-option,
+.color-option {
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: #ffffff;
+  border-radius: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.icon-option {
+  min-height: 52px;
+  font-size: 1.4rem;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.color-option {
+  min-height: 40px;
+}
+
+.icon-option:hover,
+.color-option:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.1);
+}
+
+.icon-option.selected,
+.color-option.selected {
+  border-color: var(--teal-500);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.16);
 }
 
 .color-input {
@@ -865,6 +927,14 @@
 
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .icon-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
