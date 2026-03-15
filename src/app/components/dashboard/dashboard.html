@@ -1,5 +1,4 @@
 <div class="dashboard-container">
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <h2 class="logo">
@@ -9,28 +8,25 @@
 
     <nav class="sidebar-nav">
       <a routerLink="/dashboard" class="nav-item active">
-        <span class="icon">📊</span>
+        <span class="icon">&#x1F4CA;</span>
         <span>Dashboard</span>
       </a>
       <a routerLink="/transactions" class="nav-item">
-        <span class="icon">💳</span>
+        <span class="icon">&#x1F4B3;</span>
         <span>Transactions</span>
       </a>
       <a routerLink="/categories" class="nav-item">
-        <span class="icon">🏷️</span>
+        <span class="icon">&#x1F3F7;&#xFE0F;</span>
         <span>Categories</span>
       </a>
       <a routerLink="/budget" class="nav-item">
-        <span class="icon">📋</span>
+        <span class="icon">&#x1F4CB;</span>
         <span>Budget</span>
       </a>
     </nav>
-
   </aside>
 
-  <!-- Main Content -->
   <div class="main-content">
-    <!-- Top Navbar -->
     <header class="navbar">
       <div class="navbar-content">
         <h1 class="page-title">Dashboard</h1>
@@ -55,18 +51,22 @@
       </div>
     </header>
 
-    <!-- Page Content -->
     <div class="content">
+      @if (categoryToastMessage()) {
+        <div class="toast toast-success" role="status" aria-live="polite">
+          {{ categoryToastMessage() }}
+        </div>
+      }
+
       @if (loading()) {
         <div class="loading">
           <div class="spinner"></div>
           <p>Loading dashboard...</p>
         </div>
       } @else {
-        <!-- Financial Overview -->
         <div class="overview-grid">
           <div class="overview-card">
-            <div class="card-icon income">💵</div>
+            <div class="card-icon income">&#x1F4B5;</div>
             <div class="card-content">
               <h3>Total Income</h3>
               <p class="amount">${{ totalIncome() | number:'1.2-2' }}</p>
@@ -74,7 +74,7 @@
           </div>
 
           <div class="overview-card">
-            <div class="card-icon expense">💸</div>
+            <div class="card-icon expense">&#x1F4B8;</div>
             <div class="card-content">
               <h3>Total Expense</h3>
               <p class="amount">${{ totalExpense() | number:'1.2-2' }}</p>
@@ -82,23 +82,25 @@
           </div>
 
           <div class="overview-card">
-            <div class="card-icon balance" [class.negative]="balance() < 0">💰</div>
+            <div class="card-icon balance" [class.negative]="balance() < 0">
+              &#x1F4B0;
+            </div>
             <div class="card-content">
               <h3>Balance</h3>
-              <p class="amount" [class.negative]="balance() < 0">${{ balance() | number:'1.2-2' }}</p>
+              <p class="amount" [class.negative]="balance() < 0">
+                ${{ balance() | number:'1.2-2' }}
+              </p>
             </div>
           </div>
         </div>
 
-        <!-- Recent Transactions & Budget Status -->
         <div class="content-grid">
-          <!-- Recent Transactions -->
           <div class="card">
             <div class="card-header">
               <h2>Recent Transactions</h2>
-              <a routerLink="/transactions" class="view-all">View All →</a>
+              <a routerLink="/transactions" class="view-all">View All &rarr;</a>
             </div>
-            
+
             @if (recentTransactions().length === 0) {
               <div class="empty-state">
                 <p>No transactions yet</p>
@@ -108,7 +110,7 @@
                 @for (txn of recentTransactions(); track txn.id) {
                   <div class="transaction-item">
                     <div class="transaction-info">
-                      <span class="transaction-icon">💰</span>
+                      <span class="transaction-icon">&#x1F4B0;</span>
                       <div>
                         <p class="transaction-category">
                           {{ getCategoryName(txn.categoryId) }}
@@ -125,11 +127,10 @@
             }
           </div>
 
-          <!-- Budget Overview -->
           <div class="card">
             <div class="card-header">
               <h2>Budget Status</h2>
-              <a routerLink="/budget" class="view-all">View All →</a>
+              <a routerLink="/budget" class="view-all">View All &rarr;</a>
             </div>
 
             @if (budgetStatus().length === 0) {
@@ -147,7 +148,7 @@
                       </span>
                     </div>
                     <div class="progress-bar">
-                      <div 
+                      <div
                         class="progress-fill"
                         [class]="'progress-' + getProgressColor(budget.percentage)"
                         [style.width.%]="budget.percentage"
@@ -161,7 +162,6 @@
           </div>
         </div>
 
-        <!-- Category Breakdown -->
         @if (categoryBreakdown().length > 0) {
           <div class="card">
             <div class="card-header">
@@ -191,8 +191,16 @@
   <div class="modal-overlay" (click)="closeAddCategoryForm()">
     <div class="category-modal" (click)="$event.stopPropagation()">
       <div class="category-modal-header">
-        <h2>Add Category</h2>
-        <button type="button" class="category-modal-close" (click)="closeAddCategoryForm()" aria-label="Close form">
+        <div>
+          <h2>Add Category</h2>
+          <p class="category-modal-subtitle">Create a new income or expense category.</p>
+        </div>
+        <button
+          type="button"
+          class="category-modal-close"
+          (click)="closeAddCategoryForm()"
+          aria-label="Close form"
+        >
           &times;
         </button>
       </div>
@@ -213,27 +221,45 @@
           }
         </div>
 
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="category-type">Type</label>
-            <select id="category-type" class="form-input" formControlName="type">
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
-          </div>
+        <div class="form-group">
+          <label for="category-type">Type</label>
+          <select id="category-type" class="form-input" formControlName="type">
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+        </div>
 
-          <div class="form-group">
-            <label for="category-icon">Icon</label>
-            <input id="category-icon" type="text" class="form-input" formControlName="icon" placeholder="🏷️" maxlength="2" />
+        <div class="form-group">
+          <label>Pick an Icon</label>
+          <div class="icon-grid">
+            @for (icon of iconOptions; track icon) {
+              <button
+                type="button"
+                class="icon-option"
+                [class.selected]="addCategoryForm.get('icon')?.value === icon"
+                (click)="addCategoryForm.patchValue({ icon: icon })"
+              >
+                {{ icon }}
+              </button>
+            }
           </div>
         </div>
 
         <div class="form-group">
-          <label for="category-color">Color</label>
-          <div class="color-row">
-            <input id="category-color" type="color" class="color-input" formControlName="color" />
-            <span class="color-value">{{ addCategoryForm.get('color')?.value }}</span>
+          <label>Pick a Color</label>
+          <div class="color-grid">
+            @for (color of colorOptions; track color) {
+              <button
+                type="button"
+                class="color-option"
+                [style.background-color]="color"
+                [class.selected]="addCategoryForm.get('color')?.value === color"
+                (click)="addCategoryForm.patchValue({ color: color })"
+                [title]="color"
+              ></button>
+            }
           </div>
+          <span class="color-value">{{ addCategoryForm.get('color')?.value }}</span>
         </div>
 
         @if (addCategoryError()) {
@@ -250,5 +276,3 @@
     </div>
   </div>
 }
-
-
