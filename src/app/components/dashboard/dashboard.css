@@ -1302,3 +1302,92 @@
     width: 100%;
   }
 }
+
+  /* Simple redesign overrides */
+  :host {
+    --ui-sidebar: #1e293b;
+    --ui-surface: #ffffff;
+    --ui-soft: #f8fafc;
+    --ui-border: #dbe2ea;
+    --ui-text: #0f172a;
+    --ui-muted: #64748b;
+    --ui-primary: #0f766e;
+    --ui-danger: #dc2626;
+  }
+
+  .dashboard-container {
+    background: #f4f6f8;
+    color: var(--ui-text);
+  }
+
+  .sidebar {
+    background: var(--ui-sidebar);
+    box-shadow: none;
+  }
+
+  .main-content {
+    margin-left: 272px;
+  }
+
+  .navbar,
+  .card,
+  .overview-card,
+  .hero-panel {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .content {
+    padding: 1.25rem;
+  }
+
+  .btn-create,
+  .btn-primary,
+  .hero-link {
+    background: var(--ui-primary);
+    color: #fff;
+    border: none;
+  }
+
+  .btn-secondary,
+  .hero-link-secondary {
+    background: #fff;
+    color: var(--ui-primary);
+    border: 1px solid var(--ui-border);
+  }
+
+  .amount.negative,
+  .hero-balance-amount.negative,
+  .transaction-amount.expense {
+    color: var(--ui-danger);
+  }
+
+  .transaction-amount.income {
+    color: #15803d;
+  }
+
+  .progress-bar,
+  .category-bar,
+  .table-search,
+  .table-filter,
+  .form-input,
+  .form-control,
+  input,
+  select,
+  textarea {
+    border-color: var(--ui-border);
+  }
+
+  @media (max-width: 980px) {
+    .sidebar {
+      position: static;
+      width: 100%;
+      height: auto;
+    }
+
+    .main-content {
+      margin-left: 0;
+    }
+  }
