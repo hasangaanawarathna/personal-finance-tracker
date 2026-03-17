@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Merriweather:wght@700&display=swap');
+
+:root {
+	--bg: #f4f6f8;
+	--surface: #ffffff;
+	--surface-soft: #f8fafc;
+	--text: #0f172a;
+	--text-muted: #64748b;
+	--line: #dbe2ea;
+	--primary: #0f766e;
+	--primary-strong: #115e59;
+	--danger: #dc2626;
+	--success: #15803d;
+	--warning: #b45309;
+	--shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+	--radius: 14px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+body {
+	font-family: 'Manrope', 'Segoe UI', sans-serif;
+	color: var(--text);
+	background:
+		radial-gradient(circle at 10% 0%, #e0f2fe 0%, transparent 34%),
+		radial-gradient(circle at 92% 8%, #dcfce7 0%, transparent 28%),
+		var(--bg);
+}
+
+h1,
+h2,
+h3 {
+	font-family: 'Merriweather', Georgia, serif;
+	margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
