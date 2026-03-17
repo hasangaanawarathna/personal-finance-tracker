@@ -732,3 +732,69 @@
   color: #991b1b;
   border: 1px solid #fecaca;
 }
+
+/* Simple redesign overrides */
+:host {
+  --ui-sidebar: #1e293b;
+  --ui-surface: #ffffff;
+  --ui-soft: #f8fafc;
+  --ui-border: #dbe2ea;
+  --ui-text: #0f172a;
+  --ui-muted: #64748b;
+  --ui-primary: #0f766e;
+}
+
+.transactions-container {
+  background: #f4f6f8;
+  color: var(--ui-text);
+}
+
+.sidebar {
+  background: var(--ui-sidebar);
+  box-shadow: none;
+}
+
+.navbar,
+.card,
+.table-wrap {
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.navbar {
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.btn-primary {
+  background: var(--ui-primary);
+  color: #fff;
+  border: none;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: var(--ui-primary);
+  border: 1px solid var(--ui-border);
+}
+
+.form-field input,
+.form-field select,
+.table-search,
+.table-filter {
+  border: 1px solid var(--ui-border);
+  background: #fff;
+}
+
+@media (max-width: 980px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
