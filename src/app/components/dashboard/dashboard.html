@@ -2,8 +2,10 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <h2 class="logo">
-        <span>Finance</span>
+        <span class="logo-mark">F</span>
+        <span>Finance Flow</span>
       </h2>
+      <p class="sidebar-copy">Track every dollar with a clearer daily view.</p>
     </div>
 
     <nav class="sidebar-nav">
@@ -29,7 +31,10 @@
   <div class="main-content">
     <header class="navbar">
       <div class="navbar-content">
-        <h1 class="page-title">Dashboard</h1>
+        <div>
+          <p class="eyebrow">Money Overview</p>
+          <h1 class="page-title">Dashboard</h1>
+        </div>
         <div class="navbar-right">
           <button
             type="button"
@@ -64,24 +69,71 @@
           <p>Loading dashboard...</p>
         </div>
       } @else {
+        <section class="hero-panel">
+          <div class="hero-copy">
+            <p class="hero-kicker">This month at a glance</p>
+            <h2>See where your cash is building momentum and where it is slipping away.</h2>
+            <p class="hero-description">
+              Keep an eye on balance, spending pressure, and category coverage from one place.
+            </p>
+
+            <div class="hero-actions">
+              <a routerLink="/transactions" class="hero-link">Review transactions</a>
+              <a routerLink="/budget" class="hero-link hero-link-secondary">Open budgets</a>
+            </div>
+          </div>
+
+          <div class="hero-summary">
+            <div class="hero-balance-card">
+              <span class="hero-balance-label">Available balance</span>
+              <strong class="hero-balance-amount" [class.negative]="balance() < 0">
+                ${{ balance() | number:'1.2-2' }}
+              </strong>
+              <span class="hero-balance-meta">
+                {{ balance() >= 0 ? 'You are operating above water.' : 'Spending is ahead of income.' }}
+              </span>
+            </div>
+
+            <div class="hero-stat-grid">
+              <div class="hero-stat">
+                <span class="hero-stat-value">{{ transactions().length }}</span>
+                <span class="hero-stat-label">Transactions logged</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-value">{{ categories().length }}</span>
+                <span class="hero-stat-label">Categories active</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-value">{{ budgetStatus().length }}</span>
+                <span class="hero-stat-label">Budgets tracked</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div class="overview-grid">
-          <div class="overview-card">
+          <div class="overview-card income-card">
+            <div class="overview-topline">Money in</div>
             <div class="card-icon income">&#x1F4B5;</div>
             <div class="card-content">
               <h3>Total Income</h3>
               <p class="amount">${{ totalIncome() | number:'1.2-2' }}</p>
+              <p class="amount-caption">All income recorded across your transactions.</p>
             </div>
           </div>
 
-          <div class="overview-card">
+          <div class="overview-card expense-card">
+            <div class="overview-topline">Money out</div>
             <div class="card-icon expense">&#x1F4B8;</div>
             <div class="card-content">
               <h3>Total Expense</h3>
               <p class="amount">${{ totalExpense() | number:'1.2-2' }}</p>
+              <p class="amount-caption">Your current spend across all expense categories.</p>
             </div>
           </div>
 
-          <div class="overview-card">
+          <div class="overview-card balance-card">
+            <div class="overview-topline">Net position</div>
             <div class="card-icon balance" [class.negative]="balance() < 0">
               &#x1F4B0;
             </div>
@@ -89,6 +141,9 @@
               <h3>Balance</h3>
               <p class="amount" [class.negative]="balance() < 0">
                 ${{ balance() | number:'1.2-2' }}
+              </p>
+              <p class="amount-caption">
+                {{ balance() >= 0 ? 'Healthy buffer remaining after expenses.' : 'Time to rebalance this month.' }}
               </p>
             </div>
           </div>
@@ -115,12 +170,19 @@
                         <p class="transaction-category">
                           {{ getCategoryName(txn.categoryId) }}
                         </p>
-                        <p class="transaction-date">{{ txn.date }}</p>
+                        <p class="transaction-date">
+                          {{ txn.description || 'No description added' }} . {{ txn.date }}
+                        </p>
                       </div>
                     </div>
-                    <span class="transaction-amount" [class]="txn.type">
-                      {{ txn.type === 'income' ? '+' : '-' }}${{ txn.amount | number:'1.2-2' }}
-                    </span>
+                    <div class="transaction-meta">
+                      <span class="transaction-badge" [class]="txn.type">
+                        {{ txn.type }}
+                      </span>
+                      <span class="transaction-amount" [class]="txn.type">
+                        {{ txn.type === 'income' ? '+' : '-' }}${{ txn.amount | number:'1.2-2' }}
+                      </span>
+                    </div>
                   </div>
                 }
               </div>
@@ -147,6 +209,12 @@
                         ${{ (budget.spent || 0) | number:'1.2-2' }} / ${{ budget.amount | number:'1.2-2' }}
                       </span>
                     </div>
+                    <div class="budget-status-row">
+                      <span class="budget-status-label">Usage</span>
+                      <span class="budget-status-pill" [class]="'progress-' + getProgressColor(budget.percentage)">
+                        {{ budget.percentage >= 100 ? 'Over limit' : budget.percentage >= 80 ? 'Close to limit' : 'On track' }}
+                      </span>
+                    </div>
                     <div class="progress-bar">
                       <div
                         class="progress-fill"
@@ -171,7 +239,15 @@
               @for (category of categoryBreakdown(); track category.name) {
                 <div class="category-item">
                   <div class="category-info">
-                    <span class="category-name">{{ category.name }}</span>
+                    <div>
+                      <span class="category-name">{{ category.name }}</span>
+                      <div class="category-bar">
+                        <div
+                          class="category-bar-fill"
+                          [style.width.%]="(category.amount / totalExpense()) * 100"
+                        ></div>
+                      </div>
+                    </div>
                     <span class="category-amount">${{ category.amount | number:'1.2-2' }}</span>
                   </div>
                   <div class="category-percentage">
