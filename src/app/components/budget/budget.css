@@ -802,3 +802,63 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Simple redesign overrides */
+:host {
+  --ui-sidebar: #1e293b;
+  --ui-surface: #ffffff;
+  --ui-soft: #f8fafc;
+  --ui-border: #dbe2ea;
+  --ui-text: #0f172a;
+  --ui-primary: #0f766e;
+}
+
+.budget-layout {
+  background: #f4f6f8;
+  color: var(--ui-text);
+}
+
+.sidebar {
+  background: var(--ui-sidebar);
+  box-shadow: none;
+}
+
+.header,
+.overview-card,
+.transaction-box,
+.alert-card,
+.budget-card,
+.modal {
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.btn-primary {
+  background: var(--ui-primary);
+  color: #fff;
+}
+
+.btn-secondary,
+.btn-outline {
+  background: #fff;
+  color: var(--ui-primary);
+  border: 1px solid var(--ui-border);
+}
+
+.form-control,
+.progress-bar {
+  border-color: var(--ui-border);
+}
+
+@media (max-width: 980px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
