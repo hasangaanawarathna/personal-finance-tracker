@@ -267,9 +267,12 @@
   <div class="modal-overlay" (click)="closeAddCategoryForm()">
     <div class="category-modal" (click)="$event.stopPropagation()">
       <div class="category-modal-header">
-        <div>
+        <div class="category-modal-header-copy">
+          <span class="category-modal-kicker">New category</span>
           <h2>Add Category</h2>
-          <p class="category-modal-subtitle">Create a new income or expense category.</p>
+          <p class="category-modal-subtitle">
+            Create a new income or expense category and style it before saving.
+          </p>
         </div>
         <button
           type="button"
@@ -282,64 +285,100 @@
       </div>
 
       <form [formGroup]="addCategoryForm" (ngSubmit)="saveCategory()" class="category-form">
-        <div class="form-group">
-          <label for="category-name">Category Name</label>
-          <input
-            id="category-name"
-            type="text"
-            class="form-input"
-            formControlName="name"
-            placeholder="e.g. Groceries"
-            [attr.aria-invalid]="addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched"
-          />
-          @if (addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched) {
-            <p class="form-error">Category name must be at least 2 characters.</p>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="category-type">Type</label>
-          <select id="category-type" class="form-input" formControlName="type">
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Pick an Icon</label>
-          <div class="icon-grid">
-            @for (icon of iconOptions; track icon) {
-              <button
-                type="button"
-                class="icon-option"
-                [class.selected]="addCategoryForm.get('icon')?.value === icon"
-                (click)="addCategoryForm.patchValue({ icon: icon })"
+        <div class="category-modal-body">
+          <section class="category-preview-panel">
+            <p class="category-preview-label">Live Preview</p>
+            <div
+              class="category-preview-card"
+              [style.--preview-color]="addCategoryForm.get('color')?.value"
+            >
+              <div
+                class="category-preview-icon"
+                [style.background]="
+                  'linear-gradient(135deg, ' + addCategoryForm.get('color')?.value + ', rgba(255, 255, 255, 0.92))'
+                "
               >
-                {{ icon }}
-              </button>
-            }
-          </div>
-        </div>
+                {{ addCategoryForm.get('icon')?.value }}
+              </div>
+              <div class="category-preview-content">
+                <span class="category-preview-type">{{ addCategoryForm.get('type')?.value }}</span>
+                <strong>{{ addCategoryForm.get('name')?.value || 'Category Name' }}</strong>
+                <span class="category-preview-note">Will appear across transactions and budgets.</span>
+              </div>
+            </div>
 
-        <div class="form-group">
-          <label>Pick a Color</label>
-          <div class="color-grid">
-            @for (color of colorOptions; track color) {
-              <button
-                type="button"
-                class="color-option"
-                [style.background-color]="color"
-                [class.selected]="addCategoryForm.get('color')?.value === color"
-                (click)="addCategoryForm.patchValue({ color: color })"
-                [title]="color"
-              ></button>
-            }
-          </div>
-          <span class="color-value">{{ addCategoryForm.get('color')?.value }}</span>
+            <div class="category-preview-pills">
+              <span class="preview-pill">Custom icon</span>
+              <span class="preview-pill">Custom color</span>
+            </div>
+          </section>
+
+          <section class="category-form-panel">
+            <div class="form-group">
+              <label for="category-name">Category Name</label>
+              <input
+                id="category-name"
+                type="text"
+                class="form-input"
+                formControlName="name"
+                placeholder="e.g. Groceries"
+                [attr.aria-invalid]="addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched"
+              />
+              @if (addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched) {
+                <p class="form-error">Category name must be at least 2 characters.</p>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="category-type">Type</label>
+              <select id="category-type" class="form-input" formControlName="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="form-section-head">
+                <label>Pick an Icon</label>
+                <span>{{ addCategoryForm.get('icon')?.value }}</span>
+              </div>
+              <div class="icon-grid">
+                @for (icon of iconOptions; track icon) {
+                  <button
+                    type="button"
+                    class="icon-option"
+                    [class.selected]="addCategoryForm.get('icon')?.value === icon"
+                    (click)="addCategoryForm.patchValue({ icon: icon })"
+                  >
+                    {{ icon }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-section-head">
+                <label>Pick a Color</label>
+                <span>{{ addCategoryForm.get('color')?.value }}</span>
+              </div>
+              <div class="color-grid">
+                @for (color of colorOptions; track color) {
+                  <button
+                    type="button"
+                    class="color-option"
+                    [style.background-color]="color"
+                    [class.selected]="addCategoryForm.get('color')?.value === color"
+                    (click)="addCategoryForm.patchValue({ color: color })"
+                    [title]="color"
+                  ></button>
+                }
+              </div>
+            </div>
+          </section>
         </div>
 
         @if (addCategoryError()) {
-          <p class="form-error">{{ addCategoryError() }}</p>
+          <p class="form-error form-error-banner">{{ addCategoryError() }}</p>
         }
 
         <div class="category-form-actions">
