@@ -231,3 +231,26 @@
 		gap: 1rem;
 	}
 }
+
+/* Simple redesign overrides */
+.register-page {
+	background: #f4f6f8;
+}
+
+.register-card {
+	border-radius: 14px;
+	border: 1px solid #dbe2ea;
+	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.register-hero {
+	background: #1e293b;
+}
+
+.btn-primary {
+	background: #0f766e;
+}
+
+.field input {
+	border: 1px solid #dbe2ea;
+}
