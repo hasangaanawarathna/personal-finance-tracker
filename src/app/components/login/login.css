@@ -242,3 +242,30 @@
 		gap: 1rem;
 	}
 }
+
+/* Simple redesign overrides */
+.login-page {
+	background: #f4f6f8;
+}
+
+.login-card {
+	border-radius: 14px;
+	border: 1px solid #dbe2ea;
+	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.login-hero {
+	background: #1e293b;
+}
+
+.btn-primary {
+	background: #0f766e;
+}
+
+.btn-secondary {
+	border: 1px solid #dbe2ea;
+}
+
+.field input {
+	border: 1px solid #dbe2ea;
+}
