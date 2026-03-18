@@ -1,1 +1,20 @@
-<router-outlet></router-outlet>
+<div class="app-shell">
+	<aside class="sidebar">
+		<h1>Personal Finance Tracker</h1>
+		<nav>
+			<a
+				routerLink="/dashboard"
+				routerLinkActive="active"
+				[routerLinkActiveOptions]="{ exact: true }"
+			>
+				Dashboard
+			</a>
+			<a routerLink="/transactions" routerLinkActive="active">Transactions</a>
+			<a routerLink="/categories" routerLinkActive="active">Categories</a>
+		</nav>
+	</aside>
+
+	<main class="content-area">
+		<router-outlet></router-outlet>
+	</main>
+</div>
