@@ -1,393 +1,58 @@
-<div class="dashboard-container">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h2 class="logo">
-        <span class="logo-mark">F</span>
-        <span>Finance Flow</span>
-      </h2>
-      <p class="sidebar-copy">Track every dollar with a clearer daily view.</p>
+<section class="page-header">
+  <h2>Dashboard</h2>
+  <p>Simple overview of your personal finance data.</p>
+</section>
+
+<section class="summary-grid">
+  <article class="summary-card income">
+    <h3>Total Income</h3>
+    <p>${{ totalIncome() | number: '1.2-2' }}</p>
+  </article>
+
+  <article class="summary-card expense">
+    <h3>Total Expense</h3>
+    <p>${{ totalExpense() | number: '1.2-2' }}</p>
+  </article>
+
+  <article class="summary-card balance">
+    <h3>Balance</h3>
+    <p>${{ balance() | number: '1.2-2' }}</p>
+  </article>
+</section>
+
+<section class="panel">
+  <h3>Recent Transactions</h3>
+
+  @if (recentTransactions().length === 0) {
+    <p class="empty">No transactions added yet.</p>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of recentTransactions(); track item.id) {
+            <tr>
+              <td>{{ item.title }}</td>
+              <td>${{ item.amount | number: '1.2-2' }}</td>
+              <td>
+                <span class="type" [class.income]="item.type === 'income'" [class.expense]="item.type === 'expense'">
+                  {{ item.type }}
+                </span>
+              </td>
+              <td>{{ getCategoryName(item.categoryId) }}</td>
+              <td>{{ item.date }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
-
-    <nav class="sidebar-nav">
-      <a routerLink="/dashboard" class="nav-item active">
-        <span class="icon">&#x1F4CA;</span>
-        <span>Dashboard</span>
-      </a>
-      <a routerLink="/transactions" class="nav-item">
-        <span class="icon">&#x1F4B3;</span>
-        <span>Transactions</span>
-      </a>
-      <a routerLink="/categories" class="nav-item">
-        <span class="icon">&#x1F3F7;&#xFE0F;</span>
-        <span>Categories</span>
-      </a>
-      <a routerLink="/budget" class="nav-item">
-        <span class="icon">&#x1F4CB;</span>
-        <span>Budget</span>
-      </a>
-    </nav>
-  </aside>
-
-  <div class="main-content">
-    <header class="navbar">
-      <div class="navbar-content">
-        <div>
-          <p class="eyebrow">Money Overview</p>
-          <h1 class="page-title">Dashboard</h1>
-        </div>
-        <div class="navbar-right">
-          <button
-            type="button"
-            class="btn-create"
-            aria-label="Add Category"
-            (click)="openAddCategoryForm()"
-          >
-            <span class="btn-create-icon" aria-hidden="true">+</span>
-            <span class="btn-create-text">
-              <span class="btn-create-title">Add Category</span>
-              <span class="btn-create-subtitle">Manage category list</span>
-            </span>
-          </button>
-          <div class="clock" aria-live="polite">
-            <div class="clock-time">{{ currentTime() }}</div>
-            <div class="clock-date">{{ currentDate() }}</div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="content">
-      @if (categoryToastMessage()) {
-        <div class="toast toast-success" role="status" aria-live="polite">
-          {{ categoryToastMessage() }}
-        </div>
-      }
-
-      @if (loading()) {
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Loading dashboard...</p>
-        </div>
-      } @else {
-        <section class="hero-panel">
-          <div class="hero-copy">
-            <p class="hero-kicker">This month at a glance</p>
-            <h2>See where your cash is building momentum and where it is slipping away.</h2>
-            <p class="hero-description">
-              Keep an eye on balance, spending pressure, and category coverage from one place.
-            </p>
-
-            <div class="hero-actions">
-              <a routerLink="/transactions" class="hero-link">Review transactions</a>
-              <a routerLink="/budget" class="hero-link hero-link-secondary">Open budgets</a>
-            </div>
-          </div>
-
-          <div class="hero-summary">
-            <div class="hero-balance-card">
-              <span class="hero-balance-label">Available balance</span>
-              <strong class="hero-balance-amount" [class.negative]="balance() < 0">
-                ${{ balance() | number:'1.2-2' }}
-              </strong>
-              <span class="hero-balance-meta">
-                {{ balance() >= 0 ? 'You are operating above water.' : 'Spending is ahead of income.' }}
-              </span>
-            </div>
-
-            <div class="hero-stat-grid">
-              <div class="hero-stat">
-                <span class="hero-stat-value">{{ transactions().length }}</span>
-                <span class="hero-stat-label">Transactions logged</span>
-              </div>
-              <div class="hero-stat">
-                <span class="hero-stat-value">{{ categories().length }}</span>
-                <span class="hero-stat-label">Categories active</span>
-              </div>
-              <div class="hero-stat">
-                <span class="hero-stat-value">{{ budgetStatus().length }}</span>
-                <span class="hero-stat-label">Budgets tracked</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="overview-grid">
-          <div class="overview-card income-card">
-            <div class="overview-topline">Money in</div>
-            <div class="card-icon income">&#x1F4B5;</div>
-            <div class="card-content">
-              <h3>Total Income</h3>
-              <p class="amount">${{ totalIncome() | number:'1.2-2' }}</p>
-              <p class="amount-caption">All income recorded across your transactions.</p>
-            </div>
-          </div>
-
-          <div class="overview-card expense-card">
-            <div class="overview-topline">Money out</div>
-            <div class="card-icon expense">&#x1F4B8;</div>
-            <div class="card-content">
-              <h3>Total Expense</h3>
-              <p class="amount">${{ totalExpense() | number:'1.2-2' }}</p>
-              <p class="amount-caption">Your current spend across all expense categories.</p>
-            </div>
-          </div>
-
-          <div class="overview-card balance-card">
-            <div class="overview-topline">Net position</div>
-            <div class="card-icon balance" [class.negative]="balance() < 0">
-              &#x1F4B0;
-            </div>
-            <div class="card-content">
-              <h3>Balance</h3>
-              <p class="amount" [class.negative]="balance() < 0">
-                ${{ balance() | number:'1.2-2' }}
-              </p>
-              <p class="amount-caption">
-                {{ balance() >= 0 ? 'Healthy buffer remaining after expenses.' : 'Time to rebalance this month.' }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="content-grid">
-          <div class="card">
-            <div class="card-header">
-              <h2>Recent Transactions</h2>
-              <a routerLink="/transactions" class="view-all">View All &rarr;</a>
-            </div>
-
-            @if (recentTransactions().length === 0) {
-              <div class="empty-state">
-                <p>No transactions yet</p>
-              </div>
-            } @else {
-              <div class="transactions-list">
-                @for (txn of recentTransactions(); track txn.id) {
-                  <div class="transaction-item">
-                    <div class="transaction-info">
-                      <span class="transaction-icon">&#x1F4B0;</span>
-                      <div>
-                        <p class="transaction-category">
-                          {{ getCategoryName(txn.categoryId) }}
-                        </p>
-                        <p class="transaction-date">
-                          {{ txn.description || 'No description added' }} . {{ txn.date }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="transaction-meta">
-                      <span class="transaction-badge" [class]="txn.type">
-                        {{ txn.type }}
-                      </span>
-                      <span class="transaction-amount" [class]="txn.type">
-                        {{ txn.type === 'income' ? '+' : '-' }}${{ txn.amount | number:'1.2-2' }}
-                      </span>
-                    </div>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h2>Budget Status</h2>
-              <a routerLink="/budget" class="view-all">View All &rarr;</a>
-            </div>
-
-            @if (budgetStatus().length === 0) {
-              <div class="empty-state">
-                <p>No budgets set yet</p>
-              </div>
-            } @else {
-              <div class="budget-list">
-                @for (budget of budgetStatus(); track budget.id) {
-                  <div class="budget-item">
-                    <div class="budget-info">
-                      <span class="budget-name">{{ budget.categoryName || 'Category' }}</span>
-                      <span class="budget-amount">
-                        ${{ (budget.spent || 0) | number:'1.2-2' }} / ${{ budget.amount | number:'1.2-2' }}
-                      </span>
-                    </div>
-                    <div class="budget-status-row">
-                      <span class="budget-status-label">Usage</span>
-                      <span class="budget-status-pill" [class]="'progress-' + getProgressColor(budget.percentage)">
-                        {{ budget.percentage >= 100 ? 'Over limit' : budget.percentage >= 80 ? 'Close to limit' : 'On track' }}
-                      </span>
-                    </div>
-                    <div class="progress-bar">
-                      <div
-                        class="progress-fill"
-                        [class]="'progress-' + getProgressColor(budget.percentage)"
-                        [style.width.%]="budget.percentage"
-                      ></div>
-                    </div>
-                    <span class="budget-percentage">{{ budget.percentage | number:'1.0-0' }}%</span>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        </div>
-
-        @if (categoryBreakdown().length > 0) {
-          <div class="card">
-            <div class="card-header">
-              <h2>Expense Breakdown by Category</h2>
-            </div>
-            <div class="category-breakdown">
-              @for (category of categoryBreakdown(); track category.name) {
-                <div class="category-item">
-                  <div class="category-info">
-                    <div>
-                      <span class="category-name">{{ category.name }}</span>
-                      <div class="category-bar">
-                        <div
-                          class="category-bar-fill"
-                          [style.width.%]="(category.amount / totalExpense()) * 100"
-                        ></div>
-                      </div>
-                    </div>
-                    <span class="category-amount">${{ category.amount | number:'1.2-2' }}</span>
-                  </div>
-                  <div class="category-percentage">
-                    {{ ((category.amount / totalExpense()) * 100) | number:'1.0-0' }}%
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-        }
-      }
-    </div>
-  </div>
-</div>
-
-@if (showAddCategoryForm()) {
-  <div class="modal-overlay" (click)="closeAddCategoryForm()">
-    <div class="category-modal" (click)="$event.stopPropagation()">
-      <div class="category-modal-header">
-        <div class="category-modal-header-copy">
-          <span class="category-modal-kicker">New category</span>
-          <h2>Add Category</h2>
-          <p class="category-modal-subtitle">
-            Create a new income or expense category and style it before saving.
-          </p>
-        </div>
-        <button
-          type="button"
-          class="category-modal-close"
-          (click)="closeAddCategoryForm()"
-          aria-label="Close form"
-        >
-          &times;
-        </button>
-      </div>
-
-      <form [formGroup]="addCategoryForm" (ngSubmit)="saveCategory()" class="category-form">
-        <div class="category-modal-body">
-          <section class="category-preview-panel">
-            <p class="category-preview-label">Live Preview</p>
-            <div
-              class="category-preview-card"
-              [style.--preview-color]="addCategoryForm.get('color')?.value"
-            >
-              <div
-                class="category-preview-icon"
-                [style.background]="
-                  'linear-gradient(135deg, ' + addCategoryForm.get('color')?.value + ', rgba(255, 255, 255, 0.92))'
-                "
-              >
-                {{ addCategoryForm.get('icon')?.value }}
-              </div>
-              <div class="category-preview-content">
-                <span class="category-preview-type">{{ addCategoryForm.get('type')?.value }}</span>
-                <strong>{{ addCategoryForm.get('name')?.value || 'Category Name' }}</strong>
-                <span class="category-preview-note">Will appear across transactions and budgets.</span>
-              </div>
-            </div>
-
-            <div class="category-preview-pills">
-              <span class="preview-pill">Custom icon</span>
-              <span class="preview-pill">Custom color</span>
-            </div>
-          </section>
-
-          <section class="category-form-panel">
-            <div class="form-group">
-              <label for="category-name">Category Name</label>
-              <input
-                id="category-name"
-                type="text"
-                class="form-input"
-                formControlName="name"
-                placeholder="e.g. Groceries"
-                [attr.aria-invalid]="addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched"
-              />
-              @if (addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched) {
-                <p class="form-error">Category name must be at least 2 characters.</p>
-              }
-            </div>
-
-            <div class="form-group">
-              <label for="category-type">Type</label>
-              <select id="category-type" class="form-input" formControlName="type">
-                <option value="expense">Expense</option>
-                <option value="income">Income</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <div class="form-section-head">
-                <label>Pick an Icon</label>
-                <span>{{ addCategoryForm.get('icon')?.value }}</span>
-              </div>
-              <div class="icon-grid">
-                @for (icon of iconOptions; track icon) {
-                  <button
-                    type="button"
-                    class="icon-option"
-                    [class.selected]="addCategoryForm.get('icon')?.value === icon"
-                    (click)="addCategoryForm.patchValue({ icon: icon })"
-                  >
-                    {{ icon }}
-                  </button>
-                }
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="form-section-head">
-                <label>Pick a Color</label>
-                <span>{{ addCategoryForm.get('color')?.value }}</span>
-              </div>
-              <div class="color-grid">
-                @for (color of colorOptions; track color) {
-                  <button
-                    type="button"
-                    class="color-option"
-                    [style.background-color]="color"
-                    [class.selected]="addCategoryForm.get('color')?.value === color"
-                    (click)="addCategoryForm.patchValue({ color: color })"
-                    [title]="color"
-                  ></button>
-                }
-              </div>
-            </div>
-          </section>
-        </div>
-
-        @if (addCategoryError()) {
-          <p class="form-error form-error-banner">{{ addCategoryError() }}</p>
-        }
-
-        <div class="category-form-actions">
-          <button type="button" class="btn-secondary" (click)="closeAddCategoryForm()">Cancel</button>
-          <button type="submit" class="btn-primary" [disabled]="addCategoryForm.invalid || categorySaving()">
-            {{ categorySaving() ? 'Saving...' : 'Save Category' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-}
+  }
+</section>
