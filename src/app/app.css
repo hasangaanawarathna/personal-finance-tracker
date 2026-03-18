@@ -1,0 +1,79 @@
+:host {
+	display: block;
+	min-height: 100vh;
+}
+
+.app-shell {
+	min-height: 100vh;
+	display: flex;
+	background: #f3f4f6;
+}
+
+.sidebar {
+	width: 240px;
+	background: #1f2937;
+	color: #f9fafb;
+	padding: 24px 16px;
+	flex-shrink: 0;
+}
+
+.sidebar h1 {
+	font-size: 1.15rem;
+	margin: 0 0 20px;
+}
+
+.sidebar nav {
+	display: grid;
+	gap: 8px;
+}
+
+.sidebar a {
+	color: #d1d5db;
+	text-decoration: none;
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-weight: 500;
+}
+
+.sidebar a:hover,
+.sidebar a:focus-visible {
+	background: #374151;
+	color: #ffffff;
+	outline: none;
+}
+
+.sidebar a.active {
+	background: #4b5563;
+	color: #ffffff;
+}
+
+.content-area {
+	flex: 1;
+	padding: 24px;
+	background: #ffffff;
+}
+
+@media (max-width: 900px) {
+	.app-shell {
+		flex-direction: column;
+	}
+
+	.sidebar {
+		width: 100%;
+		padding: 16px;
+	}
+
+	.sidebar nav {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.sidebar a {
+		text-align: center;
+		padding: 8px;
+		font-size: 0.9rem;
+	}
+
+	.content-area {
+		padding: 16px;
+	}
+}
