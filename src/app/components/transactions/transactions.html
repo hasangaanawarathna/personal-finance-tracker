@@ -1,88 +1,101 @@
 <section class="page-header">
+  <p class="eyebrow">Entries</p>
   <h2>Transactions</h2>
-  <p>Add and manage your income and expense entries.</p>
+  <p>Add income and expenses in a clean, simple flow.</p>
 </section>
 
-<section class="panel form-panel">
-  <h3>Add Transaction</h3>
-
-  <form [formGroup]="transactionForm" (ngSubmit)="submit()" class="form-grid">
-    <label>
-      Title
-      <input type="text" formControlName="title" />
-    </label>
-
-    <label>
-      Amount
-      <input type="number" formControlName="amount" step="0.01" />
-    </label>
-
-    <label>
-      Type
-      <select formControlName="type" (change)="onTypeChange()">
-        <option value="income">Income</option>
-        <option value="expense">Expense</option>
-      </select>
-    </label>
-
-    <label>
-      Category
-      <select formControlName="categoryId">
-        <option value="">Select Category</option>
-        @for (item of availableCategories(); track item.id) {
-          <option [value]="item.id">{{ item.name }}</option>
-        }
-      </select>
-    </label>
-
-    <label>
-      Date
-      <input type="date" formControlName="date" />
-    </label>
-
-    <div class="actions">
-      <button type="submit">Submit</button>
+<div class="page-grid">
+  <section class="panel form-panel">
+    <div class="panel-head">
+      <div>
+        <h3>Add Transaction</h3>
+        <p>Capture a new money movement in seconds.</p>
+      </div>
     </div>
-  </form>
-</section>
 
-<section class="panel">
-  <h3>All Transactions</h3>
+    <form [formGroup]="transactionForm" (ngSubmit)="submit()" class="form-grid">
+      <label>
+        Title
+        <input type="text" formControlName="title" placeholder="Salary, lunch, taxi..." />
+      </label>
 
-  @if (transactions().length === 0) {
-    <p class="empty">No transactions added yet.</p>
-  } @else {
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of transactions(); track item.id) {
-            <tr>
-              <td>{{ item.title }}</td>
-              <td>${{ item.amount | number: '1.2-2' }}</td>
-              <td>
-                <span class="type" [class.income]="item.type === 'income'" [class.expense]="item.type === 'expense'">
-                  {{ item.type }}
-                </span>
-              </td>
-              <td>{{ getCategoryName(item.categoryId) }}</td>
-              <td>{{ item.date }}</td>
-              <td>
-                <button type="button" class="delete" (click)="deleteTransaction(item)">Delete</button>
-              </td>
-            </tr>
+      <label>
+        Amount
+        <input type="number" formControlName="amount" step="0.01" placeholder="0.00" />
+      </label>
+
+      <label>
+        Type
+        <select formControlName="type" (change)="onTypeChange()">
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </label>
+
+      <label>
+        Category
+        <select formControlName="categoryId">
+          <option value="">Select category</option>
+          @for (item of availableCategories(); track item.id) {
+            <option [value]="item.id">{{ item.name }}</option>
           }
-        </tbody>
-      </table>
+        </select>
+      </label>
+
+      <label>
+        Date
+        <input type="date" formControlName="date" />
+      </label>
+
+      <div class="actions">
+        <button type="submit">Save transaction</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h3>All Transactions</h3>
+        <p>Your full transaction history.</p>
+      </div>
     </div>
-  }
-</section>
+
+    @if (transactions().length === 0) {
+      <p class="empty">No transactions added yet.</p>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of transactions(); track item.id) {
+              <tr>
+                <td>{{ item.title }}</td>
+                <td>${{ item.amount | number: '1.2-2' }}</td>
+                <td>
+                  <span class="type" [class.income]="item.type === 'income'" [class.expense]="item.type === 'expense'">
+                    {{ item.type }}
+                  </span>
+                </td>
+                <td>{{ getCategoryName(item.categoryId) }}</td>
+                <td>{{ item.date }}</td>
+                <td>
+                  <button type="button" class="delete" (click)="deleteTransaction(item)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</div>
