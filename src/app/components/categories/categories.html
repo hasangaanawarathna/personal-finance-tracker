@@ -1,62 +1,75 @@
 <section class="page-header">
+  <p class="eyebrow">Setup</p>
   <h2>Categories</h2>
-  <p>Create and manage income and expense categories.</p>
+  <p>Create clean category groups for income and spending.</p>
 </section>
 
-<section class="panel form-panel">
-  <h3>Add Category</h3>
-
-  <form [formGroup]="categoryForm" (ngSubmit)="submit()" class="form-grid">
-    <label>
-      Category Name
-      <input type="text" formControlName="name" />
-    </label>
-
-    <label>
-      Type
-      <select formControlName="type">
-        <option value="income">Income</option>
-        <option value="expense">Expense</option>
-      </select>
-    </label>
-
-    <div class="actions">
-      <button type="submit">Submit</button>
+<div class="page-grid">
+  <section class="panel form-panel">
+    <div class="panel-head">
+      <div>
+        <h3>Add Category</h3>
+        <p>Keep your tracker organized with just a few core categories.</p>
+      </div>
     </div>
-  </form>
-</section>
 
-<section class="panel">
-  <h3>Category List</h3>
+    <form [formGroup]="categoryForm" (ngSubmit)="submit()" class="form-grid">
+      <label>
+        Category Name
+        <input type="text" formControlName="name" placeholder="Food, Salary, Transport..." />
+      </label>
 
-  @if (categories().length === 0) {
-    <p class="empty">No categories added yet.</p>
-  } @else {
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of categories(); track item.id) {
+      <label>
+        Type
+        <select formControlName="type">
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </label>
+
+      <div class="actions">
+        <button type="submit">Save category</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h3>Category List</h3>
+        <p>All the groups you currently use in the tracker.</p>
+      </div>
+    </div>
+
+    @if (categories().length === 0) {
+      <p class="empty">No categories added yet.</p>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
             <tr>
-              <td>{{ item.name }}</td>
-              <td>
-                <span class="type" [class.income]="item.type === 'income'" [class.expense]="item.type === 'expense'">
-                  {{ item.type }}
-                </span>
-              </td>
-              <td>
-                <button type="button" class="delete" (click)="deleteCategory(item)">Delete</button>
-              </td>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Action</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  }
-</section>
+          </thead>
+          <tbody>
+            @for (item of categories(); track item.id) {
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                  <span class="type" [class.income]="item.type === 'income'" [class.expense]="item.type === 'expense'">
+                    {{ item.type }}
+                  </span>
+                </td>
+                <td>
+                  <button type="button" class="delete" (click)="deleteCategory(item)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</div>
