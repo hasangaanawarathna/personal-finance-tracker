@@ -1,20 +1,49 @@
-<div class="app-shell">
-	<aside class="sidebar">
-		<h1>Personal Finance Tracker</h1>
-		<nav>
-			<a
-				routerLink="/dashboard"
-				routerLinkActive="active"
-				[routerLinkActiveOptions]="{ exact: true }"
-			>
-				Dashboard
-			</a>
-			<a routerLink="/transactions" routerLinkActive="active">Transactions</a>
-			<a routerLink="/categories" routerLinkActive="active">Categories</a>
-		</nav>
-	</aside>
+@if (showShell()) {
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-mark">FT</div>
+        <div>
+          <p class="brand-label">Personal Finance</p>
+          <h1>Money Tracker</h1>
+        </div>
+      </div>
 
-	<main class="content-area">
-		<router-outlet></router-outlet>
-	</main>
-</div>
+      <nav class="sidebar-nav">
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="nav-icon">OV</span>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/transactions" routerLinkActive="active">
+          <span class="nav-icon">TX</span>
+          <span>Transactions</span>
+        </a>
+        <a routerLink="/categories" routerLinkActive="active">
+          <span class="nav-icon">CT</span>
+          <span>Categories</span>
+        </a>
+        <a routerLink="/budget" routerLinkActive="active">
+          <span class="nav-icon">BG</span>
+          <span>Budget</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-note">
+        <p>Keep your income, expenses, and budgets in one calm workspace.</p>
+        @if (isAuthenticated()) {
+          <button type="button" class="logout-btn" (click)="logout()">Sign out</button>
+        }
+      </div>
+    </aside>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}
