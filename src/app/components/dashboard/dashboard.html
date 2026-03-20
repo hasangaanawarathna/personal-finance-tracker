@@ -1,27 +1,36 @@
 <section class="page-header">
+  <p class="eyebrow">Overview</p>
   <h2>Dashboard</h2>
-  <p>Simple overview of your personal finance data.</p>
+  <p>See your balance, recent activity, and the shape of your money at a glance.</p>
 </section>
 
 <section class="summary-grid">
   <article class="summary-card income">
+    <span class="summary-tag">Incoming</span>
     <h3>Total Income</h3>
     <p>${{ totalIncome() | number: '1.2-2' }}</p>
   </article>
 
   <article class="summary-card expense">
+    <span class="summary-tag">Outgoing</span>
     <h3>Total Expense</h3>
     <p>${{ totalExpense() | number: '1.2-2' }}</p>
   </article>
 
   <article class="summary-card balance">
+    <span class="summary-tag">Current</span>
     <h3>Balance</h3>
     <p>${{ balance() | number: '1.2-2' }}</p>
   </article>
 </section>
 
 <section class="panel">
-  <h3>Recent Transactions</h3>
+  <div class="panel-head">
+    <div>
+      <h3>Recent Transactions</h3>
+      <p>Latest entries from your tracker.</p>
+    </div>
+  </div>
 
   @if (recentTransactions().length === 0) {
     <p class="empty">No transactions added yet.</p>
