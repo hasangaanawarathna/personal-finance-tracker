@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Auth } from './services/auth';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,21 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {}
+export class App {
+  private readonly router = inject(Router);
+  private readonly auth = inject(Auth);
+
+  showShell(): boolean {
+    const path = this.router.url.split('?')[0];
+    return path !== '/login' && path !== '/register';
+  }
+
+  isAuthenticated(): boolean {
+    return this.auth.isAuthenticated();
+  }
+
+  logout(): void {
+    this.auth.clearToken();
+    this.router.navigate(['/login']);
+  }
+}
