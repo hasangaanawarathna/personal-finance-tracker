@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-// GET budget
-router.get("/", (req, res) => {
-  res.json({
-    totalBudget: 0,
-    totalSpent: 0,
-    remaining: 0
-  });
-});
+const {
+  createBudget,
+  getBudgets,
+} = require("../controllers/budgetController");
+
+router.post("/", createBudget);
+router.get("/", getBudgets);
 
 module.exports = router;

@@ -1,22 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-let transactions = []; // later DB use කරනවා
+const { getDashboardData } = require("../controllers/dashboardController");
 
-router.get("/", (req, res) => {
-  let income = 0;
-  let expense = 0;
-
-  transactions.forEach(t => {
-    if (t.type === "Income") income += t.amount;
-    else expense += t.amount;
-  });
-
-  res.json({
-    totalIncome: income,
-    totalExpense: expense,
-    balance: income - expense
-  });
-});
+router.get("/", getDashboardData);
 
 module.exports = router;
